@@ -1,0 +1,50 @@
+{
+    "name": "sendtext-sveltekit-bun",
+    "private": true,
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "db:gen:sqlite": "bunx prisma generate --schema ./prisma/schema_sqlite.prisma && bunx prisma db push --accept-data-loss --schema ./prisma/schema_sqlite.prisma",
+        "db:gen:neon": "bunx prisma generate --schema ./prisma/schema_neon.prisma",
+        "vercel:install": "bun run db:gen:neon && bunx prisma db push --accept-data-loss --schema ./prisma/schema_neon.prisma"
+    },
+    "devDependencies": {
+        "@sveltejs/adapter-auto": "^3.3.1",
+        "@sveltejs/kit": "^2.16.0",
+        "@sveltejs/vite-plugin-svelte": "^4.0.4",
+        "@types/bcrypt": "^5.0.2",
+        "@types/bun": "^1.1.17",
+        "autoprefixer": "^10.4.20",
+        "bits-ui": "^1.0.0-next.77",
+        "clsx": "^2.1.1",
+        "lucide-svelte": "^0.469.0",
+        "prettier": "^3.4.2",
+        "prettier-plugin-svelte": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.10",
+        "prisma": "^6.2.1",
+        "svelte": "^5.19.0",
+        "svelte-adapter-bun": "^0.5.2",
+        "svelte-check": "^4.1.4",
+        "tailwind-merge": "^2.6.0",
+        "tailwind-variants": "^0.3.0",
+        "tailwindcss": "^3.4.17",
+        "tailwindcss-animate": "^1.0.7",
+        "typescript": "^5.7.3",
+        "vite": "^5.4.11"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.2.1",
+        "bcrypt": "^5.1.1",
+        "better-sqlite3": "^11.8.1",
+        "dayjs": "^1.11.13",
+        "es-toolkit": "^1.31.0",
+        "nanoid": "^5.0.9",
+        "rate-limiter-flexible": "^5.0.5",
+        "sveltekit-sse": "^0.13.12"
+    }
+}

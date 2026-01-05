@@ -1,0 +1,19 @@
+[Unit]
+Description=sendtext.me
+After=network.target
+
+[Service]
+ExecStart=/home/gecko/.bun/bin/bun /apps/sendtext/prod/latest/build/index.js
+WorkingDirectory=/apps/sendtext/prod/latest
+Restart=always
+User=gecko
+Group=gecko
+Environment=PATH=/home/gecko/.bun/bin:/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+RestartSec=2
+LimitNOFILE=4096
+StandardOutput=append:/var/log/app/sendtext_output.log
+StandardError=append:/var/log/app/sendtext_error.log
+
+[Install]
+WantedBy=multi-user.target

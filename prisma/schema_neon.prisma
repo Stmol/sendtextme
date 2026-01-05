@@ -1,0 +1,57 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("NEON_DATABASE_URL")
+    directUrl = env("NEON_DATABASE_URL_UNPOOLED")
+}
+
+model notes {
+    id             Int      @id @default(autoincrement())
+    uid            String   @unique
+    content        String   @default("")
+    encryptionData String
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    sessionId      Int
+    session        sessions @relation(fields: [sessionId], references: [id])
+    spaceId        Int
+    space          spaces   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+}
+
+model spaces {
+    id            Int             @id @default(autoincrement())
+    uid           String          @unique
+    password      String
+    salt          String
+    notesCount    Int             @default(0)
+    maxNotesCount Int             @default(1)
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    deletedAt     DateTime?
+    notes         notes[]
+    spaces_access spaces_access[]
+}
+
+model sessions {
+    id            Int             @id @default(autoincrement())
+    uid           String          @unique
+    createdAt     DateTime        @default(now())
+    lastHitAt     DateTime        @default(now())
+    notes         notes[]
+    spaces_access spaces_access[]
+}
+
+model spaces_access {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+    spaceId   Int
+    space     spaces   @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+    sessionId Int
+    session   sessions @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+    @@index([spaceId, sessionId])
+}
